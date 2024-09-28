@@ -52,15 +52,12 @@
       .error {
         color: red;
       }
-      audio {
-        margin-top: 20px;
-      }
     </style>
   </head>
   <body>
     <div class="container">
       <h1>YouTube Audio Searcher</h1>
-      <p>Search and play YouTube audio as MP3</p>
+      <p>Search and get YouTube audio link</p>
       <div>
         <input type="text" id="songTitle" placeholder="Enter song title" />
         <button onclick="searchSong()">Search</button>
@@ -83,13 +80,10 @@
           .then((response) => response.json())
           .then((data) => {
             if (data && data.status) {
-              const songUrl = data.audio_url; // mengambil audio_url dari API
+              const songUrl = data.audio_url; // ambil audio_url dari API
               resultDiv.innerHTML = `
-                <p><strong>Audio is ready to play:</strong></p>
-                <audio controls>
-                  <source src="${songUrl}" type="audio/mp3">
-                  Your browser does not support the audio element.
-                </audio>
+                <p><strong>Audio URL:</strong></p>
+                <a href="${songUrl}" target="_blank">${songUrl}</a>
               `;
             } else {
               resultDiv.innerHTML = "<p class='error'>Song not found.</p>";
