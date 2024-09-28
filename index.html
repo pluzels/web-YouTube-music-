@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>YouTube Audio Searcher</title>
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+        font-family: Arial, sans-serif;
+        background-color: #f4f4f4;
+        text-align: center;
+        color: #333;
+      }
+      .container {
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 50px 20px;
+      }
+      h1 {
+        color: #2196F3;
+      }
+      p {
+        font-size: 18px;
+      }
+      input[type="text"] {
+        width: 70%;
+        padding: 10px;
+        font-size: 16px;
+        border-radius: 5px;
+        border: 1px solid #ccc;
+        margin-right: 10px;
+      }
+      button {
+        padding: 10px 20px;
+        font-size: 16px;
+        color: white;
+        background-color: #2196F3;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+      }
+      button:hover {
+        background-color: #1976D2;
+      }
+      .result {
+        margin-top: 20px;
+        font-size: 18px;
+        color: #333;
+      }
+      .error {
+        color: red;
+      }
+      audio {
+        margin-top: 20px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>YouTube Audio Searcher</h1>
+      <p>Search and play YouTube audio as MP3</p>
+      <div>
+        <input type="text" id="songTitle" placeholder="Enter song title" />
+        <button onclick="searchSong()">Search</button>
+      </div>
+      <div id="result" class="result"></div>
+    </div>
+
+    <script>
+      function searchSong() {
+        const title = document.getElementById("songTitle").value;
+        const resultDiv = document.getElementById("result");
+        if (!title) {
+          resultDiv.innerHTML = "<p class='error'>Please enter a song title.</p>";
+          return;
+        }
+
+        const url = `https://api-gi.galihjsdev.xyz/ytdl/ytplay?query=${encodeURIComponent(title)}&type=audio`;
+
+        fetch(url)
+          .then((response) => response.json())
+          .then((data) => {
+            if (data && data.status) {
+              const songUrl = data.audio_url; // mengambil audio_url dari API
+              resultDiv.innerHTML = `
+                <p><strong>Audio is ready to play:</strong></p>
+                <audio controls>
+                  <source src="${songUrl}" type="audio/mp3">
+                  Your browser does not support the audio element.
+                </audio>
+              `;
+            } else {
+              resultDiv.innerHTML = "<p class='error'>Song not found.</p>";
+            }
+          })
+          .catch((error) => {
+            resultDiv.innerHTML = "<p class='error'>Error fetching data.</p>";
+          });
+      }
+    </script>
+  </body>
+</html>
