@@ -52,12 +52,15 @@
       .error {
         color: red;
       }
+      audio {
+        margin-top: 20px;
+      }
     </style>
   </head>
   <body>
     <div class="container">
       <h1>YouTube Audio Searcher</h1>
-      <p>Search and get YouTube audio link</p>
+      <p>Search and download YouTube audio</p>
       <div>
         <input type="text" id="songTitle" placeholder="Enter song title" />
         <button onclick="searchSong()">Search</button>
@@ -79,11 +82,12 @@
         fetch(url)
           .then((response) => response.json())
           .then((data) => {
-            if (data && data.status) {
+            if (data && data.audio_url) {
               const songUrl = data.audio_url; // ambil audio_url dari API
               resultDiv.innerHTML = `
-                <p><strong>Audio URL:</strong></p>
-                <a href="${songUrl}" target="_blank">${songUrl}</a>
+                <p><strong>Audio title:</strong> ${data.title}</p>
+                <p><strong>Author:</strong> ${data.author}</p>
+                <p><a href="${songUrl}" download>Download Audio</a></p>
               `;
             } else {
               resultDiv.innerHTML = "<p class='error'>Song not found.</p>";
